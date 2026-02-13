@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Universe</title>
+    <!-- Tailwind CSS for Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons (Phosphor Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                        accent: '#6366f1', // Indigo
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hide Scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+
+        /* Mind Map Grid Background */
+        .dot-grid {
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Transition for pages */
+        .page-section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Admin only elements */
+        .admin-only {
+            display: none !important;
+        }
+        body.is-admin .admin-only {
+            display: flex !important;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col relative">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 cursor-pointer" onclick="router('home')">
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
+                        MY.SPACE
+                    </span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <button onclick="router('home')" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Home</button>
+                        <button onclick="router('hobbies')" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Hobbies</button>
+                        <button onclick="router('projects')" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Projects</button>
+                        <button onclick="router('research')" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Research</button>
+                        <button onclick="router('map')" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Project Map</button>
+                        <button onclick="router('blog')" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition">Blog</button>
+                    </div>
+                </div>
+
+                <!-- Auth Button -->
+                <div>
+                    <button id="authBtn" onclick="router('login')" class="bg-slate-700 hover:bg-slate-600 px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-2">
+                        <i class="ph ph-user"></i> <span id="authText">Login</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Placeholder (Simplified) -->
+        <div class="md:hidden flex justify-around py-2 border-t border-slate-700 text-xs text-slate-400">
+            <span onclick="router('home')">Home</span>
+            <span onclick="router('projects')">Work</span>
+            <span onclick="router('map')">Map</span>
+            <span onclick="router('blog')">Blog</span>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow pt-20 px-4 pb-12 max-w-7xl mx-auto w-full">
+
+        <!-- 1. HOME PAGE -->
+        <section id="home" class="page-section active">
+            <div class="mt-20 text-center">
+                <div class="inline-block p-1 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 mb-6">
+                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix" alt="Profile" class="w-32 h-32 rounded-full bg-slate-900 p-1">
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                    Creative <span class="text-indigo-400">Developer</span> & <br> System <span class="text-purple-400">Architect</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
+                    Welcome to my digital garden. I build web applications, conduct research, and map out complex ideas.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="router('projects')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold transition">View Projects</button>
+                    <button onclick="router('map')" class="glass hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition">Explore Mind Map</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. HOBBIES -->
+        <section id="hobbies" class="page-section">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Life & Interests</h2>
+                <button class="admin-only bg-green-600 px-3 py-1 rounded text-xs">Based on Admin: Edit</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Hobby Card -->
+                <div class="glass p-6 rounded-xl relative group">
+                    <button class="admin-only absolute top-2 right-2 bg-blue-600 p-1 rounded-full text-xs"><i class="ph ph-pencil"></i></button>
+                    <div class="text-4xl text-yellow-400 mb-4"><i class="ph ph-film-strip"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Cinema</h3>
+                    <p class="text-slate-400 text-sm">Recent favorites include Sci-Fi classics and Noir thrillers.</p>
+                </div>
+                <!-- Hobby Card -->
+                <div class="glass p-6 rounded-xl relative group">
+                    <div class="text-4xl text-green-400 mb-4"><i class="ph ph-spotify-logo"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Music</h3>
+                    <p class="text-slate-400 text-sm">Collecting vinyl and analyzing synth-wave patterns.</p>
+                </div>
+                <!-- Hobby Card -->
+                <div class="glass p-6 rounded-xl relative group">
+                    <div class="text-4xl text-red-400 mb-4"><i class="ph ph-book-open"></i></div>
+                    <h3 class="text-xl font-bold mb-2">Reading</h3>
+                    <p class="text-slate-400 text-sm">Currently reading: "The Pragmatic Programmer".</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PROJECTS -->
+        <section id="projects" class="page-section">
+            <h2 class="text-3xl font-bold mb-8">Project Demos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project Item -->
+                <div class="glass rounded-xl overflow-hidden hover:border-indigo-500 transition border border-transparent">
+                    <div class="h-48 bg-slate-800 flex items-center justify-center text-slate-600">
+                        [Project Image Placeholder]
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between">
+                            <h3 class="text-2xl font-bold mb-2">Diary App</h3>
+                            <div class="flex gap-2 admin-only">
+                                <button class="text-blue-400"><i class="ph ph-pencil"></i></button>
+                                <button class="text-red-400"><i class="ph ph-trash"></i></button>
+                            </div>
+                        </div>
+                        <span class="bg-indigo-900 text-indigo-200 text-xs px-2 py-1 rounded">React</span>
+                        <p class="text-slate-400 mt-4">A gamified personal diary application with mood tracking and data visualization.</p>
+                        <div class="mt-4 flex gap-4">
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 text-sm font-semibold">Live Demo &rarr;</a>
+                            <a href="#" class="text-slate-400 hover:text-white text-sm font-semibold">GitHub &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. RESEARCH -->
+        <section id="research" class="page-section">
+            <h2 class="text-3xl font-bold mb-8">Academic Research</h2>
+            <div class="space-y-6">
+                <!-- Research Item -->
+                <div class="glass p-8 rounded-xl border-l-4 border-purple-500">
+                    <h3 class="text-2xl font-bold">Neural Networks in Web Optimization</h3>
+                    <p class="text-slate-500 text-sm mb-4">Published: Jan 2024 | Conference: IEEE WebConf</p>
+                    <p class="text-slate-300 mb-4">Abstract: Utilizing machine learning models to predict user navigation patterns and pre-load assets dynamically...</p>
+                    <button class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-sm transition">Read Paper (PDF)</button>
+                    <div class="mt-4 admin-only border-t border-slate-700 pt-2">
+                        <button class="text-sm text-green-400">Edit Citation</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PROJECT MAP (MIND MAP) -->
+        <section id="map" class="page-section">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-3xl font-bold">Project Mind Map</h2>
+                    <p class="text-slate-400 text-sm">Interactive visualization of my knowledge graph.</p>
+                </div>
+                <!-- Admin Toolbar -->
+                <div class="admin-only flex gap-2">
+                    <button class="bg-indigo-600 px-3 py-1 rounded text-sm shadow hover:bg-indigo-500"><i class="ph ph-plus"></i> Add Node</button>
+                    <button class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600"><i class="ph ph-floppy-disk"></i> Save Map</button>
+                </div>
+            </div>
+
+            <!-- Fake Canvas Container -->
+            <div class="w-full h-[600px] bg-slate-900 rounded-xl dot-grid border border-slate-700 relative overflow-hidden shadow-inner">
+                
+                <!-- This simulates the React Flow nodes -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                    
+                    <!-- SVG Lines (Edges) -->
+                    <svg class="absolute top-0 left-0 w-full h-full pointer-events-none stroke-slate-600" style="z-index: 0;">
+                        <line x1="50%" y1="50%" x2="30%" y2="30%" stroke-width="2" />
+                        <line x1="50%" y1="50%" x2="70%" y2="30%" stroke-width="2" />
+                        <line x1="50%" y1="50%" x2="50%" y2="70%" stroke-width="2" />
+                    </svg>
+
+                    <!-- Central Node -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-indigo-600 p-4 rounded-lg shadow-lg border border-indigo-400 z-10 w-40 text-center cursor-move">
+                        <span class="font-bold text-white">Core Idea</span>
+                    </div>
+
+                    <!-- Child Node 1 -->
+                    <div class="absolute top-[30%] left-[30%] transform -translate-x-1/2 -translate-y-1/2 glass p-3 rounded-lg border border-slate-500 z-10 w-32 text-center cursor-pointer hover:border-indigo-400 transition">
+                        <span class="text-sm">Web Dev</span>
+                    </div>
+
+                    <!-- Child Node 2 -->
+                    <div class="absolute top-[30%] left-[70%] transform -translate-x-1/2 -translate-y-1/2 glass p-3 rounded-lg border border-slate-500 z-10 w-32 text-center cursor-pointer hover:border-indigo-400 transition">
+                        <span class="text-sm">AI Research</span>
+                    </div>
+
+                    <!-- Child Node 3 -->
+                    <div class="absolute top-[70%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 glass p-3 rounded-lg border border-slate-500 z-10 w-32 text-center cursor-pointer hover:border-indigo-400 transition">
+                        <span class="text-sm">Game Design</span>
+                    </div>
+
+                    <!-- Admin Overlay hint -->
+                    <div class="admin-only absolute bottom-4 right-4 bg-yellow-600/20 text-yellow-400 px-3 py-1 rounded border border-yellow-600/50 text-xs">
+                        <i class="ph ph-pencil-simple"></i> Edit Mode Active
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. BLOG -->
+        <section id="blog" class="page-section">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Latest Articles</h2>
+                <button class="admin-only bg-indigo-600 px-4 py-2 rounded font-medium hover:bg-indigo-500">
+                    <i class="ph ph-plus"></i> New Post
+                </button>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-12">
+                <!-- Blog Post 1 -->
+                <article class="border-b border-slate-700 pb-8">
+                    <span class="text-indigo-400 text-sm font-semibold">February 10, 2026</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-4 hover:text-indigo-300 cursor-pointer">Building a Second Brain with React Flow</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        Mind mapping is usually a static activity. In this post, I explore how to turn a static diagram into a fully interactive knowledge management system using React Flow and Firebase...
+                    </p>
+                    <div class="mt-4 flex gap-4">
+                        <button class="text-indigo-400 text-sm font-medium hover:underline">Read more</button>
+                        <button class="admin-only text-slate-500 text-sm hover:text-white">Edit</button>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="border-b border-slate-700 pb-8">
+                    <span class="text-indigo-400 text-sm font-semibold">January 22, 2026</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-4 hover:text-indigo-300 cursor-pointer">Why Glassmorphism is here to stay</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        Design trends come and go, but the utility of translucent layers in UI design offers a depth that flat design simply cannot achieve. Here is my breakdown of the physics behind the blur...
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- 7. LOGIN PAGE -->
+        <section id="login" class="page-section">
+            <div class="flex items-center justify-center h-[60vh]">
+                <div class="glass p-8 rounded-2xl w-full max-w-md border border-slate-600 shadow-2xl">
+                    <h2 class="text-2xl font-bold mb-6 text-center">Admin Access</h2>
+                    <form onsubmit="handleLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-1">Username</label>
+                            <input type="text" id="username" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-white" placeholder="ID">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-400 mb-1">Password</label>
+                            <input type="password" id="password" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-white" placeholder="Pass">
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            Unlock System
+                        </button>
+                    </form>
+                    <p id="loginError" class="text-red-400 text-sm mt-4 text-center hidden">Invalid credentials.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 mt-auto py-8 text-center text-slate-500 text-sm">
+        <p>&copy; 2026 Personal Portfolio. Built with Tailwind & Coffee.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. SIMPLE ROUTER
+        function router(pageId) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Show target section
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo(0,0);
+            }
+        }
+
+        // 2. AUTHENTICATION LOGIC (MOCKED)
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('loginError');
+
+            // Hardcoded Credentials as requested
+            if (user === '12345' && pass === '54321') {
+                toggleAdminMode(true);
+                router('home'); // Redirect to home
+                errorMsg.classList.add('hidden');
+                alert("Welcome back, Admin. Editing enabled.");
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        // 3. TOGGLE ADMIN STATE
+        let isAdmin = false;
+
+        function toggleAdminMode(status) {
+            isAdmin = status;
+            const body = document.body;
+            const authText = document.getElementById('authText');
+            const authBtn = document.getElementById('authBtn');
+
+            if (isAdmin) {
+                body.classList.add('is-admin');
+                authText.innerText = "Logout";
+                authBtn.setAttribute('onclick', 'handleLogout()');
+                authBtn.classList.remove('bg-slate-700');
+                authBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+            } else {
+                body.classList.remove('is-admin');
+                authText.innerText = "Login";
+                authBtn.setAttribute('onclick', "router('login')");
+                authBtn.classList.add('bg-slate-700');
+                authBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+            }
+        }
+
+        function handleLogout() {
+            toggleAdminMode(false);
+            router('home');
+            alert("Logged out successfully.");
+        }
+    </script>
+</body>
+</html>
